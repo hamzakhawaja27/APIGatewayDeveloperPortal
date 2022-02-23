@@ -6,7 +6,8 @@ import _ from 'lodash'
 import { apiGatewayClientWithCredentials } from './api'
 import { store } from './state'
 import { isAdmin } from './self'
-
+const axios = require('axios');
+window.apiGatewayClientWithCredentials = apiGatewayClientWithCredentials;
 /* Catalog and API Utils */
 
 /**
@@ -43,6 +44,13 @@ export function updateUsagePlansAndApisList (bustCache = false) {
   // eslint-disable-next-line no-return-assign
   return catalogPromiseCache = apiGatewayClientWithCredentials()
     .then(apiGatewayClient => apiGatewayClient.get('/catalog', {}, {}, {}))
+    .then((url)=>{
+          console.log("Hamza khawaja")
+          var presignedurl = url;
+          console.log(presignedurl)
+          return axios.get(presignedurl)
+
+    })
     .then(({ data = { apiGateway: [], generic: [] } }) => {
       store.usagePlans = data.apiGateway
       store.apiList = {

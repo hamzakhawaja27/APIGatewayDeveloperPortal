@@ -81,8 +81,22 @@ exports.catalog = () => {
     ExpectedBucketOwner: process.env.SourceAccount
   }
 
-  console.log(`params: ${JSON.stringify(params, null, 4)}`)
+  
+  ////
+    const myBucket = process.env.StaticBucketName
+    const myKey = 'catalog.json'
+    const signedUrlExpireSeconds = 60 * 5
+ 
+  const params1 = {
+    Bucket: process.env.StaticBucketName,
+    Key: 'catalog.json',
+    Expires: signedUrlExpireSeconds
+  }
+  
+  /////
 
+  console.log(`params: ${JSON.stringify(params, null, 4)}`)
+/*
   return exports.s3.getObject(params).promise()
     .then((catalog) => {
       const cleanCatalog = JSON.parse(catalog.Body.toString())
@@ -104,4 +118,11 @@ exports.catalog = () => {
 
       throw error
     })
+    
+*/  
+  var url = exports.s3.getSignedUrl('getObject', params);
+  console.log('The URL is', url);
+  return url
+ 
+
 }
